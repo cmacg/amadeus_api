@@ -19,7 +19,7 @@ class Tax {
       percentage = json['percentage'],
       included = json['included'],
       description = json['description'],
-      pricingFrequency = json['pricingFrequenct'],
+      pricingFrequency = json['pricingFrequency'],
       pricingMode = json['pricingMode'];
 
   Map<String, dynamic> toJson() => {

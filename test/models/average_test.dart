@@ -1,4 +1,4 @@
-import 'package:amadeusapi/models/average.dart';
+import 'package:amadeusapi/models/hotels/average.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

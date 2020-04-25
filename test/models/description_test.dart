@@ -1,4 +1,4 @@
-import 'package:amadeusapi/models/description.dart' as desc;
+import 'package:amadeusapi/models/hotels/description.dart' as desc;
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

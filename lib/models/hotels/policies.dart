@@ -1,8 +1,8 @@
-import 'package:amadeusapi/models/cancellation.dart';
-import 'package:amadeusapi/models/check_in_out.dart';
-import 'package:amadeusapi/models/deposit.dart';
-import 'package:amadeusapi/models/guarantee.dart';
-import 'package:amadeusapi/models/hold_time.dart';
+import 'package:amadeusapi/models/hotels/cancellation.dart';
+import 'package:amadeusapi/models/hotels/check_in_out.dart';
+import 'package:amadeusapi/models/hotels/deposit.dart';
+import 'package:amadeusapi/models/hotels/guarantee.dart';
+import 'package:amadeusapi/models/hotels/hold_time.dart';
 
 class Policies {
   final String paymentType;

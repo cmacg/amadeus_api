@@ -16,7 +16,7 @@ class AcceptedPayments {
   static List<String> _getStringPaymentMethods(List<PaymentMethod> methods) {
     List<String> paymentMethods = new List<String>();
     for (PaymentMethod method in methods) {
-      paymentMethods.add(method.toString());
+      paymentMethods.add(method.toString().split('.').last);
     }
     return paymentMethods;
   }

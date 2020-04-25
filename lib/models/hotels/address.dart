@@ -8,7 +8,7 @@ class Address {
   Address({this.lines, this.postalCode, this.cityName, this.stateCode, this.countryCode});
 
   Address.fromJson(Map<String, dynamic> json)
-      : lines = json['lines'] == null ? null : json['lines'] as List<String>,
+      : lines = json['lines'] == null ? null : List<String>.from(json["lines"].map((x) => x)),
         postalCode = json['postalCode'],
         cityName = json['cityName'],
         stateCode = json['stateCode'],

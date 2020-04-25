@@ -1,10 +1,10 @@
-import 'package:amadeusapi/models/commission.dart';
-import 'package:amadeusapi/models/description.dart';
-import 'package:amadeusapi/models/guests.dart';
-import 'package:amadeusapi/models/policies.dart';
-import 'package:amadeusapi/models/price.dart';
-import 'package:amadeusapi/models/rate_family_estimated.dart';
-import 'package:amadeusapi/models/room.dart';
+import 'package:amadeusapi/models/hotels/commission.dart';
+import 'package:amadeusapi/models/hotels/description.dart';
+import 'package:amadeusapi/models/hotels/guests.dart';
+import 'package:amadeusapi/models/hotels/policies.dart';
+import 'package:amadeusapi/models/hotels/price.dart';
+import 'package:amadeusapi/models/hotels/rate_family_estimated.dart';
+import 'package:amadeusapi/models/hotels/room.dart';
 import 'package:intl/intl.dart';
 
 class Offer {

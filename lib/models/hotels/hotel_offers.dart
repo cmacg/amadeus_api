@@ -1,5 +1,5 @@
-import 'package:amadeusapi/models/hotel.dart';
-import 'package:amadeusapi/models/offer.dart';
+import 'package:amadeusapi/models/hotels/hotel.dart';
+import 'package:amadeusapi/models/hotels/offer.dart';
 
 class HotelOffers {
   final String type;

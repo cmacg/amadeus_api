@@ -1,5 +1,5 @@
-import 'package:amadeusapi/models/accepted_payments.dart';
-import 'package:amadeusapi/models/description.dart';
+import 'package:amadeusapi/models/hotels/accepted_payments.dart';
+import 'package:amadeusapi/models/hotels/description.dart';
 import 'package:intl/intl.dart';
 
 class Deposit {

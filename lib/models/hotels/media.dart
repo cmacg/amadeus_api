@@ -10,7 +10,7 @@ class Media {
 
   Map<String, dynamic> toJson() => {
         'uri': uri,
-        'category': category.toString(),
+        'category': category.toString().split('.').last,
       };
 
   static MediaCategory _getMediaCategory(String category) {

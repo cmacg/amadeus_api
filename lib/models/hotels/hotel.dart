@@ -1,9 +1,9 @@
-import 'package:amadeusapi/models/address.dart';
-import 'package:amadeusapi/models/contact.dart';
-import 'package:amadeusapi/models/description.dart';
-import 'package:amadeusapi/models/hotel_distance.dart';
-import 'package:amadeusapi/models/media.dart';
-import 'package:amadeusapi/models/offer.dart';
+import 'package:amadeusapi/models/hotels/address.dart';
+import 'package:amadeusapi/models/hotels/contact.dart';
+import 'package:amadeusapi/models/hotels/description.dart';
+import 'package:amadeusapi/models/hotels/hotel_distance.dart';
+import 'package:amadeusapi/models/hotels/media.dart';
+import 'package:amadeusapi/models/hotels/offer.dart';
 
 class Hotel {
   final String type;

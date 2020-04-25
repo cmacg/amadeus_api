@@ -1,4 +1,4 @@
-import 'package:amadeusapi/models/changes.dart';
+import 'package:amadeusapi/models/hotels/change.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -11,7 +11,7 @@ void main() {
   };
 
   test('Testing the Changes fromJson method', () {
-    final Changes changes = Changes.fromJson(json);
+    final Change changes = Change.fromJson(json);
     DateTime start = new DateTime(2020, 12, 02);
     DateTime end = new DateTime(1980, 04, 11);
     expect(changes.startDate, start);
@@ -21,8 +21,8 @@ void main() {
   });
 
   test('Testing the Changes toJson method', () {
-    final Changes changes = Changes.fromJson(json);
-    Map<String, dynamic> test = changes.toJson();
+    final Change change = Change.fromJson(json);
+    Map<String, dynamic> test = change.toJson();
     expect(test['startDate'], '2020-12-02');
     expect(test['endDate'], '1980-04-11');
     expect(test['base'], '1010.78');

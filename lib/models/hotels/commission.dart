@@ -1,4 +1,4 @@
-import 'package:amadeusapi/models/description.dart';
+import 'package:amadeusapi/models/hotels/description.dart';
 
 class Commission {
 

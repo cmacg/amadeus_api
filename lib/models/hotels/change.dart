@@ -1,14 +1,14 @@
 import 'package:intl/intl.dart';
 
-class Changes {
+class Change {
   final DateTime startDate;
   final DateTime endDate;
   final String base;
   final String total;
 
-  Changes(this.startDate, this.endDate, this.base, this.total);
+  Change(this.startDate, this.endDate, this.base, this.total);
 
-  Changes.fromJson(Map<String, dynamic> json)
+  Change.fromJson(Map<String, dynamic> json)
   : startDate = DateTime.parse(json['startDate']),
     endDate = DateTime.parse(json['endDate']),
     base = json['base'],
