@@ -6,12 +6,12 @@ class HotelDistance {
   HotelDistance(this.distance, this.distanceUnit);
 
   HotelDistance.fromJson(Map<String, dynamic> json)
-  : distance = json['distance'].toDouble(),
-  distanceUnit = _getDistanceUnit(json['distance']);
+  : distance = json['distance'],
+  distanceUnit = json['distanceUnit'] == null ? null : _getDistanceUnit(json['distanceUnit']);
 
   Map<String, dynamic> toJson() => {
     'distance': distance,
-    'distanceUnit': distanceUnit.toString(),
+    'distanceUnit': distanceUnit == null ? null : distanceUnit.toString().split('.').last,
   };
 
 

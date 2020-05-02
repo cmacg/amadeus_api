@@ -17,20 +17,20 @@ class Cancellation {
       this.description});
 
   Cancellation.fromJson(Map<String, dynamic> json)
-      : type = _getCancellationType(json['type']),
+      : type = json['type'] == null ? null : _getCancellationType(json['type']),
         amount = json['amount'],
         numberOfNights = json['numberOfNights'],
         percent = json['percent'],
-        deadline = json['deadline'],
-        description = Description.fromJson(json['description']);
+        deadline = json['deadline'] == null ? null : DateTime.parse(json['deadline']),
+        description = json['description'] == null ? null : Description.fromJson(json['description']);
 
   Map<String, dynamic> toJson() => {
-        'type': type.toString(),
+        'type': type == null ? null : type.toString(),
         'amount': amount,
         'numberOfNights': numberOfNights,
         'precent': percent,
-        'deadline': deadline,
-        'description': description.toJson(),
+        'deadline': deadline == null ? null : deadline.toIso8601String(),
+        'description': description == null ? null : description.toJson(),
       };
 
   static CancellationType _getCancellationType(String type) {

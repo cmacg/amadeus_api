@@ -9,14 +9,14 @@ class Change {
   Change(this.startDate, this.endDate, this.base, this.total);
 
   Change.fromJson(Map<String, dynamic> json)
-  : startDate = DateTime.parse(json['startDate']),
-    endDate = DateTime.parse(json['endDate']),
+  : startDate = json['startDate'] == null ? null : DateTime.parse(json['startDate']),
+    endDate = json['endDate'] == null ? null : DateTime.parse(json['endDate']),
     base = json['base'],
     total = json['total'];
 
   Map<String, dynamic> toJson() => {
-    'startDate': (new DateFormat('yyyy-MM-dd').format(startDate)),
-    'endDate': (new DateFormat('yyyy-MM-dd').format(endDate)),
+    'startDate': startDate == null ? null : (new DateFormat('yyyy-MM-dd').format(startDate)),
+    'endDate': endDate == null ? null : (new DateFormat('yyyy-MM-dd').format(endDate)),
     'base': base,
     'total': total,
   };

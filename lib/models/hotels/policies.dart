@@ -18,21 +18,21 @@ class Policies {
 
   Policies.fromJson(Map<String, dynamic> json)
     : paymentType = json['paymentType'],
-      guarantee = Guarantee.fromJson(json['guarantee']),
-      deposit = Deposit.fromJson(json['deposit']),
-      prepay = Deposit.fromJson(json['prepay']),
-      holdTime = HoldTime.fromJson(json['holdTime']),
-      cancellation = Cancellation.fromJson(json['cancellation']),
-      checkInOut = CheckInOut.fromJson(json['checkInOut']);
+      guarantee = json['guarantee'] == null ? null : Guarantee.fromJson(json['guarantee']),
+      deposit = json['depost'] == null ? null : Deposit.fromJson(json['deposit']),
+      prepay = json['prepay'] == null ? null : Deposit.fromJson(json['prepay']),
+      holdTime = json['holdTime'] == null ? null : HoldTime.fromJson(json['holdTime']),
+      cancellation = json['cancellation'] == null ? null : Cancellation.fromJson(json['cancellation']),
+      checkInOut = json['checkInOut'] == null ? null : CheckInOut.fromJson(json['checkInOut']);
 
   Map<String, dynamic> toJson() => {
     'paymentType': paymentType,
-    'guarantee': guarantee.toJson(),
-    'deposit': deposit.toJson(),
-    'prepay': prepay.toJson(),
-    'holdTime': holdTime.toJson(),
-    'cancellation': cancellation.toJson(),
-    'checkInOut': checkInOut.toJson(),
+    'guarantee': guarantee == null ? null : guarantee.toJson(),
+    'deposit': deposit == null ? null : deposit.toJson(),
+    'prepay': prepay == null ? null : prepay.toJson(),
+    'holdTime': holdTime == null ? null : holdTime.toJson(),
+    'cancellation': cancellation == null ? null : cancellation.toJson(),
+    'checkInOut': checkInOut == null ? null : checkInOut.toJson(),
   };
 
 }

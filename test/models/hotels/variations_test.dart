@@ -18,6 +18,7 @@ void main() {
     };
 
     final Variations variations = Variations.fromJson(json);
+    expect(variations, isNotNull);
 
   });
 }

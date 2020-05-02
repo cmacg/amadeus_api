@@ -13,15 +13,15 @@ class Deposit {
 
   Deposit.fromJson(Map<String, dynamic> json)
     : amount = json['amount'],
-      deadline = DateTime.parse(json['deadline']),
-      description = Description.fromJson(json['description']),
-      acceptedPayments = AcceptedPayments.fromJson(json['acceptedPayments']);
+      deadline = json['deadline'] == null ? null : DateTime.parse(json['deadline']),
+      description = json['description'] == null ? null : Description.fromJson(json['description']),
+      acceptedPayments = json['acceptedPayments'] == null ? null : AcceptedPayments.fromJson(json['acceptedPayments']);
 
   Map<String, dynamic> toJson() => {
     'amount': amount,
-    'deadline': (new DateFormat("yyyy.MM.dd'T'HH:mm:ss")).format(deadline),
-    'description': description.toJson(),
-    'acceptedPayments': acceptedPayments.toJson(),
+    'deadline': deadline == null ? null : (new DateFormat("yyyy.MM.dd'T'HH:mm:ss")).format(deadline),
+    'description': description == null ? null : description.toJson(),
+    'acceptedPayments': acceptedPayments == null ? null : acceptedPayments.toJson(),
   };
 
 }

@@ -9,11 +9,11 @@ class Guarantee {
   Guarantee(this.description, this.acceptedPayments);
 
   Guarantee.fromJson(Map<String, dynamic> json)
-  : description = Description.fromJson(json['description']),
-  acceptedPayments = AcceptedPayments.fromJson(json['acceptedPayments']);
+  : description = json['description'] == null ? null : Description.fromJson(json['description']),
+  acceptedPayments = json['acceptedPayments'] == null ? null : AcceptedPayments.fromJson(json['acceptedPayments']);
 
   Map<String, dynamic> toJson() => {
-    'description': description.toJson(),
-    'acceptedPayments': acceptedPayments.toJson(),
+    'description': description == null ? null : description.toJson(),
+    'acceptedPayments': acceptedPayments == null ? null : acceptedPayments.toJson(),
   };
 }

@@ -11,11 +11,11 @@ class Commission {
   Commission.fromJson(Map<String, dynamic> json)
   :   percentage = json['percentage'],
     amount = json['amount'],
-    description = Description.fromJson(json['description']);
+    description = json['description'] == null ? null : Description.fromJson(json['description']);
 
   Map<String, dynamic> toJson() => {
     'percentage': percentage,
     'amount': amount,
-    'description': description.toJson(),
+    'description': description == null ? null :  description.toJson(),
   };
 }

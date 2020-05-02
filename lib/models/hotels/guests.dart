@@ -6,10 +6,10 @@ class Guests {
 
   Guests.fromJson(Map<String, dynamic> json)
   : adults = json['adults'],
-    childAges = json['childAges'] as List<int>;
+    childAges = json['childAges'] == null ? null : json['childAges'] as List<int>;
 
   Map<String, dynamic> toJson() => {
     'adults': adults,
-    'childAges': childAges,
+    'childAges': childAges == null ? null : childAges,
   };
 }

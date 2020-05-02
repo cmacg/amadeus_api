@@ -8,12 +8,12 @@ class TypeEstimated {
 
   TypeEstimated.fromJson(Map<String, dynamic> json)
   : category = json['category'],
-    beds = json['beds'].toInt(),
+    beds = json['beds'] == null ? null : json['beds'].toInt(),
     bedType = json['bedType'];
 
   Map<String, dynamic> toJson() => {
     'category': category,
-    'beds': beds.toInt(),
+    'beds': beds == null ? null : beds.toInt(),
     'bedType': bedType,
   };
 }

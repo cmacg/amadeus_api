@@ -46,37 +46,37 @@ class Offer {
   Offer.fromJson(Map<String, dynamic> json)
       : type = json['type'],
         id = json['id'],
-        checkInDate = DateTime.parse(json['checkInDate']),
-        checkOutDate = DateTime.parse(json['checkOutDate']),
+        checkInDate = json['checkInDate'] == null ? null : DateTime.parse(json['checkInDate']),
+        checkOutDate = json['checkOutDate'] == null ? null : DateTime.parse(json['checkOutDate']),
         roomQuantity = json['roomQuantity'],
         rateCode = json['rateCode'],
-        rateFamilyEstimated =
+        rateFamilyEstimated = json['rateFamilyEstimated'] == null ? null :
             RateFamilyEstimated.fromJson(json['rateFamilyEstimated']),
         category = json['category'],
-        description = Description.fromJson(json['description']),
-        commission = Commission.fromJson(json['commission']),
-        boardType = _getBoardType(json['boardType']),
+        description = json['description'] == null ? null : Description.fromJson(json['description']),
+        commission = json['commission'] == null ? null : Commission.fromJson(json['commission']),
+        boardType = json['boardType'] == null ? null : _getBoardType(json['boardType']),
         room = Room.fromJson(json['room']),
-        guests = Guests.fromJson(json['guests']),
+        guests = json['guests'] == null ? null : Guests.fromJson(json['guests']),
         price = Price.fromJson(json['price']),
-        policies = Policies.fromJson(json['policies']),
+        policies = json['policies'] == null ? null : Policies.fromJson(json['policies']),
         self = json['self'];
 
   Map<String, dynamic> toJson() => {
         'type': type,
         'id': id,
-        'checkInDate': (new DateFormat('yyyy-MM-dd')).format(checkInDate),
-        'checkOutDate': (new DateFormat('yyyy-MM-dd')).format(checkOutDate),
+        'checkInDate': checkInDate == null ? null : (new DateFormat('yyyy-MM-dd')).format(checkInDate),
+        'checkOutDate': checkOutDate == null ? null : (new DateFormat('yyyy-MM-dd')).format(checkOutDate),
         'rateCode': rateCode,
-        'rateFamilyEstimated': rateFamilyEstimated.toJson(),
+        'rateFamilyEstimated': rateFamilyEstimated == null ? null : rateFamilyEstimated.toJson(),
         'category': category,
-        'description': description.toJson(),
-        'commission': commission.toJson(),
-        'boardType': boardType.toString(),
+        'description': description == null ? null : description.toJson(),
+        'commission': commission == null ? null : commission.toJson(),
+        'boardType': boardType == null ? null : boardType.toString(),
         'room': room.toJson(),
-        'guests': guests.toJson(),
+        'guests': guests == null ? null : guests.toJson(),
         'price': price.toJson(),
-        'policies': policies.toJson(),
+        'policies': policies == null ? null : policies.toJson(),
         'self': self
       };
 

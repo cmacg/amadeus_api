@@ -12,16 +12,16 @@ class CheckInOut {
       this.checkOutDescription);
 
   CheckInOut.fromJson(Map<String, dynamic> json)
-  : checkIn = DateTime.parse(json['checkIn']),
-    checkOut = DateTime.parse(json['checkOut']),
-    checkInDescription = Description.fromJson(json['checkInDescription']),
-    checkOutDescription = Description.fromJson(json['checkOutDescription']);
+  : checkIn = json['checkIn'] == null ? null : DateTime.parse(json['checkIn']),
+    checkOut = json['checkOut'] == null ? null : DateTime.parse(json['checkOut']),
+    checkInDescription = json['checkInDescription'] == null ? null : Description.fromJson(json['checkInDescription']),
+    checkOutDescription = json['checkOutDescription'] == null ? null : Description.fromJson(json['checkOutDescription']);
 
   Map<String, dynamic> toJson() => {
-    'checkIn': (new DateFormat.Hms().format(checkIn)),
-    'checkOut': (new DateFormat.Hms().format(checkOut)),
-    'checkInDescription': checkInDescription.toJson(),
-    'checkOutDescription': checkOutDescription.toJson(),
+    'checkIn': checkIn == null ? null : (new DateFormat.Hms().format(checkIn)),
+    'checkOut': checkOut == null ? null : (new DateFormat.Hms().format(checkOut)),
+    'checkInDescription': checkInDescription == null ? null : checkInDescription.toJson(),
+    'checkOutDescription': checkOutDescription == null ? null : checkOutDescription.toJson(),
   };
 
 }

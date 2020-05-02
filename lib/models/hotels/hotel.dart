@@ -45,12 +45,12 @@ class Hotel {
 
   Hotel.fromJson(Map<String, dynamic> json)
       : type = json['type'],
-        id = json['id'],
+        id = json['hotelId'],
         chainCode = json['chainCode'],
         brandCode = json['brandCode'],
         dupeId = json['dupeId'],
         name = json['name'],
-        rating = json['rating'],
+        rating = json['rating'] == null ? null : double.parse(json['rating']),
         description = json['description'] == null
             ? null
             : Description.fromJson(json['description']),
@@ -64,22 +64,21 @@ class Hotel {
             json['address'] == null ? null : Address.fromJson(json['address']),
         contact =
             json['contact'] == null ? null : Contact.fromJson(json['contact']),
-        amenities = json['amenities'] as List<String>,
-        media = json['media'] == null
-            ? null
-            : (json['media'] as List).map((i) => Media.fromJson(i)),
+        amenities = json['amenities'] == null ? null : List<String>.from(json['amenities']),
+        media = json['media'] == null ? null
+            : (json['media'] as List).map((i) => Media.fromJson(i)).toList(),
         offers = json['offers'] == null
             ? null
             : (json['offers'] as List).map((i) => Offer.fromJson(i));
 
   Map<String, dynamic> toJson() => {
         'type': type,
-        'id': id,
+        'hotelId': id,
         'chainCode': chainCode,
         'brandCode': brandCode,
         'dupeId': dupeId,
         'name': name,
-        'rating': rating,
+        'rating': rating == null ? null : rating,
         'description': description == null ? null : description.toJson(),
         'cityCode': cityCode,
         'latitude': latitude,
@@ -87,7 +86,7 @@ class Hotel {
         'hotelDistance': hotelDistance == null ? null : hotelDistance.toJson(),
         'address': address == null ? null : address.toJson(),
         'contact': contact == null ? null : contact.toJson(),
-        'amenities': amenities,
+        'amenities': amenities == null ? null : amenities,
         'media': media == null ? null : media.map((i) => i.toJson()),
         'offers': offers == null ? null : offers.map((i) => i.toJson()),
       };

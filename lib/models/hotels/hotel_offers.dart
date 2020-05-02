@@ -13,16 +13,16 @@ class HotelOffers {
   HotelOffers.fromJson(Map<String, dynamic> json)
       : type = json['type'],
         available = json['available'],
-        hotel = Hotel.fromJson(json['hotel']),
-        offers =
+        hotel = json['hotel'] == null ? null : Hotel.fromJson(json['hotel']),
+        offers = json['offers'] == null ? null :
             (json['offers'] as List).map((i) => Offer.fromJson(i)).toList(),
         self = json['self'];
 
   Map<String, dynamic> toJson() => {
         'type': type,
         'available': available,
-        'hotel': hotel.toJson(),
-        'offers': offers.map((i) => i.toJson()),
+        'hotel': hotel == null ? null : hotel.toJson(),
+        'offers': offers == null ? null : offers.map((i) => i.toJson()),
         'self': self,
       };
 }
