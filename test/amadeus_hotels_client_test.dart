@@ -1,8 +1,8 @@
 import 'package:amadeusapi/amadeus_hotels_client.dart';
 import 'package:amadeusapi/models/hotels/hotel_offers.dart';
 
-final String apiKey = 'DliX4pnlWMxirhNB7gxRAASy2QtBVlSR';
-final String apiSecret = 'k7oJQF5fuG9bw0X6';
+final String apiKey = '';
+final String apiSecret = '';
 
 void main() async {
 
