@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:amadeusapi/credentials.dart';
 import 'package:amadeusapi/models/hotels/offers/v3/multi_response.dart';
 
-import 'client_exception.dart';
+import '../../client_exception.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 

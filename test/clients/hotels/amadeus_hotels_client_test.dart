@@ -1,5 +1,5 @@
 import 'package:amadeusapi/credentials.dart';
-import 'package:amadeusapi/amadeus_hotels_v3_client.dart';
+import 'package:amadeusapi/clients/hotels/amadeus_hotels_client.dart';
 import 'package:amadeusapi/client_exception.dart';
 import 'package:amadeusapi/models/hotels/offers/v3/multi_response.dart';
 
