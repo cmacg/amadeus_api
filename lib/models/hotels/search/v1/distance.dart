@@ -15,10 +15,19 @@ class Distance {
   });
 
   Distance.fromJson(Map<String, dynamic> json) {
-    unit = json['unit'] != null ? DistanceUnit.values[json['unit']] : null;
+    unit = json['unit'] == null ? null : _getDistanceUnit(json['unit']);
     value = json['value'];
     displayValue = json['displayValue'];
     isUnlimited = json['isUnlimited'];
+  }
+
+  static DistanceUnit? _getDistanceUnit(String unit) {
+    for (DistanceUnit distanceUnit in DistanceUnit.values) {
+      if (distanceUnit.toString().endsWith(unit.toUpperCase())) {
+        return distanceUnit;
+      }
+    }
+    return null;
   }
 }
 
