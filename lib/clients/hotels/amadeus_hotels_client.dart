@@ -134,7 +134,7 @@ class AmadeusHotelsClient extends AmadeusClient {
     return HotelsSearchResponse.fromJson(json.decode(response.body));
   }
 
-  Future<HotelsSearchResponse> bookHotel(
+  Future<HotelBookedResponse> bookHotel(
       {required List<String> hotelIds}) async {
     Map<String, String> query = new HashMap<String, String>();
 
@@ -149,7 +149,7 @@ class AmadeusHotelsClient extends AmadeusClient {
 
     final response = await executeQuery(uri, query, accessToken);
 
-    return HotelsSearchResponse.fromJson(json.decode(response.body));
+    return HotelBookedResponse.fromJson(json.decode(response.body));
   }
 
   Future<MultiResponse> getMultiHotelOffers(
