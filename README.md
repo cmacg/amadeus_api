@@ -30,7 +30,7 @@ This project also intends to provide help for the developer through the inconsis
     * Flight Check-in Links - **Coming Soon**
     * Airline Code Lookup - **Coming Soon**
 * Destination
-    * Popints of Interest **Coming Soon**
+    * Points of Interest **Coming Soon**
 
 
 ## Getting Started
@@ -43,12 +43,12 @@ Follow the documentation for getting started on [Amadeus for Developers](https:/
 ### Environment Setup
 After checking out the code from github, you will need to create a ./lib/credential.dart file.  This file will contain your unique API and API_SECRET keys.
 
-`` 
+``` 
     class Credentials {
         static const String API_KEY = 'YOUR API KEY GOES HERE';
         static const String API_SECRET = 'YOUR API SECRET GOES HERE';
     }
-``        
+```        
 
 ## Client Usage and Examples
 

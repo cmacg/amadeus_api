@@ -3,18 +3,18 @@ This guide will direct you on how to create your hotel client and execute a hote
 
 The first step is the creation of the ``AmadeusHotelsClient``.
 
-``
+```
     final AmadeusHotelsClient hotelClient = AmadeusHotelsClient(
       apiKey: Credentials.API_KEY,
       apiSecret: Credentials.API_SECRET,
       test: true);
-``
+```
 
 ## Hotel Search
 
 ### Hotel Search by City Code
 
-``
+```
     try {
         HotelsSearchResponse citySearchResponse =
             await hotelClient.searchHotelsByCityCode(
@@ -25,7 +25,7 @@ The first step is the creation of the ``AmadeusHotelsClient``.
         print('Exception occurred when trying to call search hotels: $e');
         // handle the exception/errors
     }
-``
+```
 
 ### Hotel Search by Geo Code
 
