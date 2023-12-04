@@ -15,7 +15,7 @@ class Meta {
   final List<String>? sort;
 
   /// Links related to the returned object(s)
-  final List<Links>? links;
+  final Links? links;
 
   Meta({
     required this.count,
@@ -26,7 +26,5 @@ class Meta {
   Meta.fromJson(Map<String, dynamic> json)
       : count = json['count'],
         sort = json['sort'] == null ? null : List<String>.from(json["sort"]),
-        links = json['links'] == null
-            ? null
-            : (json['links'] as List).map((i) => Links.fromJson(i)).toList();
+        links = json['links'] == null ? null : Links.fromJson(json['links']);
 }

@@ -1,65 +1,155 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:amadeusapi/credentials.dart';
+import 'package:amadeusapi/client_exception.dart';
+import 'package:amadeusapi/clients/amadeus_client.dart';
+import 'package:amadeusapi/models/hotels/booking/v1/hotel_booked_response.dart';
 import 'package:amadeusapi/models/hotels/offers/v3/multi_response.dart';
+import 'package:amadeusapi/models/hotels/search/v1/distance.dart';
+import 'package:amadeusapi/models/hotels/search/v1/hotels_search_response.dart';
 
-import '../../client_exception.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-class AmadeusHotelsV3Client {
-  final String? apiKey;
-  final String? apiSecret;
-  final String authority = 'api.amadeus.com';
-  final String testAuthority = 'test.api.amadeus.com';
-  final String path = '/v3/shopping/hotel-offers';
-  final String authPath = '/v1/security/oauth2/token';
-  final bool test;
-  String? _accessToken;
+class AmadeusHotelsClient extends AmadeusClient {
+  final String hotelsSearchPath =
+      '/v1/reference-data/locations/hotels/by-hotels';
+  final String citySearchPath = '/v1/reference-data/locations/hotels/by-city';
+  final String geoCodeSearchPath =
+      '/v1/reference-data/locations/hotels/by-geocode';
+  final String offersPath = '/v3/shopping/hotel-offers';
 
-  AmadeusHotelsV3Client(
-      {this.apiKey = Credentials.API_KEY,
-      this.apiSecret = Credentials.API_SECRET,
-      this.test = false}) {}
+  AmadeusHotelsClient(
+      {required super.apiKey, required super.apiSecret, super.test = false});
 
-  Future<String> _getAccessToken() async {
-    if (_accessToken != null) {
-      return Future<String>.value(_accessToken);
+  Future<HotelsSearchResponse> searchHotelsByCityCode(
+      {required String cityCode,
+      int? radius,
+      DistanceUnit? radiusUnit,
+      List<String>? chainCodes,
+      List<Amenity>? amenities,
+      List<int>? ratings,
+      HotelSource hotelSource = HotelSource.ALL}) async {
+    Map<String, String> query = new HashMap<String, String>();
+    query.putIfAbsent('cityCode', () => cityCode);
+    if (radius != null) {
+      query.putIfAbsent('radius', () => radius.toString());
     }
+    if (radiusUnit != null) {
+      query.putIfAbsent(
+          'radiusUnit', () => radiusUnit.toString().split('.').last);
+    }
+    if (chainCodes != null) {
+      query.putIfAbsent('chainCodes', () => chainCodes.join(','));
+    }
+    if (amenities != null) {
+      query.putIfAbsent(
+          'amenities',
+          () => amenities
+              .map((i) => i.toString().split('.').last)
+              .toList()
+              .toString());
+    }
+    if (ratings != null) {
+      query.putIfAbsent('ratings', () => ratings.join(','));
+    }
+    query.putIfAbsent(
+        'hotelSource', () => hotelSource.toString().split('.').last);
 
-    String body = 'grant_type=client_credentials&client_id=' +
-        apiKey! +
-        '&client_secret=' +
-        apiSecret!;
-
-    Map<String, String> headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
-
-    var authUri = Uri(
-        scheme: 'https',
-        host: (test) ? testAuthority : authority,
-        path: authPath);
-
+    Uri uri = Uri.https(authority, citySearchPath, query);
     if (test) {
-      print(authUri);
-      print(body);
+      uri = Uri.https(testAuthority, citySearchPath, query);
     }
 
-    http.Response response =
-        await http.post(authUri, headers: headers, body: body);
+    String accessToken = await getAccessToken();
 
-    if (response.statusCode != 200) {
-      throw AmadeusClientHttpException(response.statusCode,
-          'Unable to authenticate: ' + response.toString(), null);
+    final response = await executeQuery(uri, query, accessToken);
+
+    return HotelsSearchResponse.fromJson(json.decode(response.body));
+  }
+
+  Future<HotelsSearchResponse> searchHotelsByGeoCode(
+      {required num latitude,
+      required num longitude,
+      int? radius,
+      DistanceUnit? radiusUnit,
+      List<String>? chainCodes,
+      List<Amenity>? amenities,
+      List<int>? ratings,
+      HotelSource hotelSource = HotelSource.ALL}) async {
+    Map<String, String> query = new HashMap<String, String>();
+    query.putIfAbsent('latitude', () => latitude.toString());
+    query.putIfAbsent('longitude', () => longitude.toString());
+    if (radius != null) {
+      query.putIfAbsent('radius', () => radius.toString());
+    }
+    if (radiusUnit != null) {
+      query.putIfAbsent(
+          'radiusUnit', () => radiusUnit.toString().split('.').last);
+    }
+    if (chainCodes != null) {
+      query.putIfAbsent('chainCodes', () => chainCodes.join(','));
+    }
+    if (amenities != null) {
+      query.putIfAbsent(
+          'amenities',
+          () => amenities
+              .map((i) => i.toString().split('.').last)
+              .toList()
+              .toString());
+    }
+    if (ratings != null) {
+      query.putIfAbsent('ratings', () => ratings.join(','));
+    }
+    query.putIfAbsent(
+        'hotelSource', () => hotelSource.toString().split('.').last);
+
+    Uri uri = Uri.https(authority, geoCodeSearchPath, query);
+    if (test) {
+      uri = Uri.https(testAuthority, geoCodeSearchPath, query);
     }
 
-    AuthenticationResponse authResponse =
-        AuthenticationResponse.fromJson(json.decode(response.body));
-    _accessToken = authResponse.accessToken;
+    String accessToken = await getAccessToken();
 
-    return Future<String>.value(_accessToken);
+    final response = await executeQuery(uri, query, accessToken);
+
+    return HotelsSearchResponse.fromJson(json.decode(response.body));
+  }
+
+  Future<HotelsSearchResponse> searchHotelsByHotelId(
+      {required List<String> hotelIds}) async {
+    Map<String, String> query = new HashMap<String, String>();
+
+    query.putIfAbsent('hotelIds', () => hotelIds.join(','));
+
+    Uri uri = Uri.https(authority, hotelsSearchPath, query);
+    if (test) {
+      uri = Uri.https(testAuthority, hotelsSearchPath, query);
+    }
+
+    String accessToken = await getAccessToken();
+
+    final response = await executeQuery(uri, query, accessToken);
+
+    return HotelsSearchResponse.fromJson(json.decode(response.body));
+  }
+
+  Future<HotelBookedResponse> bookHotel(
+      {required List<String> hotelIds}) async {
+    Map<String, String> query = new HashMap<String, String>();
+
+    query.putIfAbsent('hotelIds', () => hotelIds.join(','));
+
+    Uri uri = Uri.https(authority, hotelsSearchPath, query);
+    if (test) {
+      uri = Uri.https(testAuthority, hotelsSearchPath, query);
+    }
+
+    String accessToken = await getAccessToken();
+
+    final response = await executeQuery(uri, query, accessToken);
+
+    return HotelBookedResponse.fromJson(json.decode(response.body));
   }
 
   Future<MultiResponse> getMultiHotelOffers(
@@ -108,33 +198,20 @@ class AmadeusHotelsV3Client {
     query.putIfAbsent('bestRateOnly', () => bestRateOnly.toString());
     query.putIfAbsent('lang', () => lang);
 
-    Uri uri = Uri.https(authority, path, query);
+    Uri uri = Uri.https(authority, offersPath, query);
     if (test) {
-      uri = Uri.https(testAuthority, path, query);
+      uri = Uri.https(testAuthority, offersPath, query);
     }
 
-    if (test) {
-      print('Uri: ' + uri.toString());
-    }
-
-    if (_accessToken == null) {
-      print('Getting OAuth2 access token');
-      try {
-        _accessToken = await _getAccessToken();
-      } on AmadeusClientHttpException catch (e) {
-        throw e;
-      }
-      if (test) {
-        print('OAuth2 access token: ' + _accessToken!);
-      }
-    }
-
+    String accessToken = await getAccessToken();
     final Map<String, String> headers = {
-      'Authorization': 'Bearer ' + _accessToken!
+      'Authorization': 'Bearer ' + accessToken
     };
 
     final response = await http.get(uri, headers: headers);
-    print('Response: ' + response.body);
+
+    if (test) print('Response: ' + response.body);
+
     if (response.statusCode != 200) {
       throw AmadeusClientHttpException(
           response.statusCode, 'Http error when calling service', null);
@@ -151,31 +228,6 @@ class AmadeusHotelsV3Client {
     return buffer.toString();
   }
 }
-
-class AuthenticationResponse {
-  final String type;
-  final String username;
-  final String applicationName;
-  final String clientId;
-  final String tokenType;
-  final String accessToken;
-  final int expiresIn;
-  final String state;
-  final String scope;
-
-  AuthenticationResponse.fromJson(Map<String, dynamic> json)
-      : type = json['type'],
-        username = json['username'],
-        applicationName = json['application_name'],
-        clientId = json['client_id'],
-        tokenType = json['token_type'],
-        accessToken = json['access_token'],
-        expiresIn = json['expires_in'],
-        state = json['state'],
-        scope = json['scope'];
-}
-
-enum RadiusUnit { KM, MILE }
 
 // TODO Get a full list of chains, brands and merchants
 final Map<String, String> chainCodes = {
@@ -194,7 +246,19 @@ final Map<String, String> chainCodes = {
 // TODO Get a full list of rate codes
 enum RateCode { GOV, AAA, MIL, SNR, PRO, COR }
 
-//TODO WI-FI_IN_ROOM was changed to WIFI_IN_ROOM and BABY-SITTING was changed to BABY_SITTING
+enum BoardType { ROOM_ONLY, BREAKFAST, HALF_BOARD, FULL_BOARD, ALL_INCLUSIVE }
+
+enum ViewType { FULL, LIGHT, NONE }
+
+enum SortType { NONE, DISTANCE, PRICE }
+
+enum PaymentPolicy { GUARANTEE, DEPOSIT, NONE }
+
+// TODO handle gotchas
+// gotchas:
+// BABY_SITTING vs. BABY-SITTING
+// BAR_OR_LOUNGE vs. BAR or LOUNGE
+// WIFI_IN_ROOM vs. WI-FI_IN_ROOM
 enum Amenity {
   SWIMMING_POOL,
   SPA,
@@ -221,7 +285,7 @@ enum Amenity {
   SOLARIUM,
   MASSAGE,
   VALET_PARKING,
-  BAR,
+  BAR_OR_LOUNGE,
   KIDS_WELCOME,
   NO_PORN_FILMS,
   MINIBAR,
@@ -232,10 +296,4 @@ enum Amenity {
   SERV_SPEC_MENU
 }
 
-enum BoardType { ROOM_ONLY, BREAKFAST, HALF_BOARD, FULL_BOARD, ALL_INCLUSIVE }
-
-enum ViewType { FULL, LIGHT, NONE }
-
-enum SortType { NONE, DISTANCE, PRICE }
-
-enum PaymentPolicy { GUARANTEE, DEPOSIT, NONE }
+enum HotelSource { BEDBANK, DIRECTCHAIN, ALL }
