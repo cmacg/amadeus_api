@@ -1,23 +1,25 @@
 import 'dart:collection';
 import 'dart:convert';
-
 import 'package:amadeusapi/client_exception.dart';
 import 'package:amadeusapi/clients/amadeus_client.dart';
 import 'package:amadeusapi/models/hotels/booking/v1/hotel_booked_response.dart';
+import 'package:amadeusapi/models/hotels/booking/v1/hotel_booking_query.dart';
 import 'package:amadeusapi/models/hotels/offers/v3/multi_response.dart';
 import 'package:amadeusapi/models/hotels/search/v1/distance.dart';
 import 'package:amadeusapi/models/hotels/search/v1/hotels_search_response.dart';
-
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+/// This is the main client for all hotel interactions with the Amadeus self-
+/// service hotel APIs.
 class AmadeusHotelsClient extends AmadeusClient {
-  final String hotelsSearchPath =
+  static const String hotelsSearchPath =
       '/v1/reference-data/locations/hotels/by-hotels';
-  final String citySearchPath = '/v1/reference-data/locations/hotels/by-city';
-  final String geoCodeSearchPath =
+  static const String citySearchPath =
+      '/v1/reference-data/locations/hotels/by-city';
+  static const String geoCodeSearchPath =
       '/v1/reference-data/locations/hotels/by-geocode';
-  final String offersPath = '/v3/shopping/hotel-offers';
+  static const String offersPath = '/v3/shopping/hotel-offers';
+  static const bookingPath = '/booking/hotel-bookings';
 
   AmadeusHotelsClient(
       {required super.apiKey, required super.apiSecret, super.test = false});
@@ -56,14 +58,8 @@ class AmadeusHotelsClient extends AmadeusClient {
     query.putIfAbsent(
         'hotelSource', () => hotelSource.toString().split('.').last);
 
-    Uri uri = Uri.https(authority, citySearchPath, query);
-    if (test) {
-      uri = Uri.https(testAuthority, citySearchPath, query);
-    }
-
-    String accessToken = await getAccessToken();
-
-    final response = await executeQuery(uri, query, accessToken);
+    Uri uri = getUri(citySearchPath, query, test);
+    final response = await executeQuery(uri);
 
     return HotelsSearchResponse.fromJson(json.decode(response.body));
   }
@@ -104,14 +100,8 @@ class AmadeusHotelsClient extends AmadeusClient {
     query.putIfAbsent(
         'hotelSource', () => hotelSource.toString().split('.').last);
 
-    Uri uri = Uri.https(authority, geoCodeSearchPath, query);
-    if (test) {
-      uri = Uri.https(testAuthority, geoCodeSearchPath, query);
-    }
-
-    String accessToken = await getAccessToken();
-
-    final response = await executeQuery(uri, query, accessToken);
+    Uri uri = getUri(geoCodeSearchPath, query, test);
+    final response = await executeQuery(uri);
 
     return HotelsSearchResponse.fromJson(json.decode(response.body));
   }
@@ -122,32 +112,16 @@ class AmadeusHotelsClient extends AmadeusClient {
 
     query.putIfAbsent('hotelIds', () => hotelIds.join(','));
 
-    Uri uri = Uri.https(authority, hotelsSearchPath, query);
-    if (test) {
-      uri = Uri.https(testAuthority, hotelsSearchPath, query);
-    }
-
-    String accessToken = await getAccessToken();
-
-    final response = await executeQuery(uri, query, accessToken);
+    Uri uri = getUri(hotelsSearchPath, query, test);
+    final response = await executeQuery(uri);
 
     return HotelsSearchResponse.fromJson(json.decode(response.body));
   }
 
   Future<HotelBookedResponse> bookHotel(
-      {required List<String> hotelIds}) async {
-    Map<String, String> query = new HashMap<String, String>();
-
-    query.putIfAbsent('hotelIds', () => hotelIds.join(','));
-
-    Uri uri = Uri.https(authority, hotelsSearchPath, query);
-    if (test) {
-      uri = Uri.https(testAuthority, hotelsSearchPath, query);
-    }
-
-    String accessToken = await getAccessToken();
-
-    final response = await executeQuery(uri, query, accessToken);
+      {required HotelBookingQuery bookingQuery}) async {
+    Uri uri = getUri(hotelsSearchPath, null, test);
+    final response = await executePost(uri, bookingQuery.toJson());
 
     return HotelBookedResponse.fromJson(json.decode(response.body));
   }
@@ -198,17 +172,8 @@ class AmadeusHotelsClient extends AmadeusClient {
     query.putIfAbsent('bestRateOnly', () => bestRateOnly.toString());
     query.putIfAbsent('lang', () => lang);
 
-    Uri uri = Uri.https(authority, offersPath, query);
-    if (test) {
-      uri = Uri.https(testAuthority, offersPath, query);
-    }
-
-    String accessToken = await getAccessToken();
-    final Map<String, String> headers = {
-      'Authorization': 'Bearer ' + accessToken
-    };
-
-    final response = await http.get(uri, headers: headers);
+    Uri uri = getUri(offersPath, query, test);
+    final response = await executeQuery(uri);
 
     if (test) print('Response: ' + response.body);
 
@@ -218,14 +183,6 @@ class AmadeusHotelsClient extends AmadeusClient {
     }
 
     return MultiResponse.fromJson(json.decode(response.body));
-  }
-
-  String _getEnumValues(List<dynamic> enumerations) {
-    StringBuffer buffer = StringBuffer();
-    for (dynamic enumeration in enumerations) {
-      buffer.write(enumeration.toString().split('.').last + ',');
-    }
-    return buffer.toString();
   }
 }
 

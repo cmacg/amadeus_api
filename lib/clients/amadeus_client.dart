@@ -12,13 +12,13 @@ abstract class AmadeusClient {
   final String apiSecret;
 
   /// Production base url for the API products.
-  final String authority = 'api.amadeus.com';
+  static const String _authority = 'api.amadeus.com';
 
   /// Test base url for the API products.
-  final String testAuthority = 'test.api.amadeus.com';
+  static const String _testAuthority = 'test.api.amadeus.com';
 
   /// Path to get an updated OAuth ticket.
-  final String authPath = '/v1/security/oauth2/token';
+  static const String _authPath = '/v1/security/oauth2/token';
 
   /// Flag that determines whether the extending client is using test versus
   /// production api services.
@@ -31,6 +31,14 @@ abstract class AmadeusClient {
 
   AmadeusClient(
       {required this.apiKey, required this.apiSecret, this.test = false});
+
+  Uri getUri(String path, Map<String, String>? query, bool test) {
+    Uri uri = Uri.https(_authority, path, query);
+    if (test) {
+      uri = Uri.https(_testAuthority, path, query);
+    }
+    return uri;
+  }
 
   /// This method should be used to determine if the access token has expired.
   /// The goal is to prevent the client from having to execute retries to re-
@@ -60,8 +68,8 @@ abstract class AmadeusClient {
 
     var authUri = Uri(
         scheme: 'https',
-        host: (test) ? testAuthority : authority,
-        path: authPath);
+        host: (test) ? _testAuthority : _authority,
+        path: _authPath);
 
     if (test) {
       print(authUri);
@@ -88,24 +96,44 @@ abstract class AmadeusClient {
 
     return Future<String>.value(_accessToken);
   }
-}
 
-Future<http.Response> executeQuery(
-    Uri uri, Map<String, dynamic> query, String accessToken) async {
-  final Map<String, String> headers = {
-    'Authorization': 'Bearer ' + accessToken
-  };
+  Future<http.Response> executeQuery(Uri uri) async {
+    String accessToken = await getAccessToken();
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ' + accessToken
+    };
 
-  final response = await http.get(uri, headers: headers);
+    final response = await http.get(uri, headers: headers);
 
-  if (response.statusCode != 200) {
-    // TODO if errors exist in the response - convert them to the models
-    // and add them to the throw clause below
-    throw AmadeusClientHttpException(
-        response.statusCode, 'Http error when calling service', null);
+    if (response.statusCode != 200) {
+      // TODO if errors exist in the response - convert them to the models
+      // and add them to the throw clause below
+      throw AmadeusClientHttpException(
+          response.statusCode, 'Http error when calling service', null);
+    }
+
+    return response;
   }
 
-  return response;
+  Future<http.Response> executePost(Uri uri, Map<String, dynamic> body) async {
+    String accessToken = await getAccessToken();
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ' + accessToken,
+      'Content-Type': 'application/json; charset=UTF-8',
+    };
+
+    final response =
+        await http.post(uri, headers: headers, body: jsonEncode(body));
+
+    if (response.statusCode != 200) {
+      // TODO if errors exist in the response - convert them to the models
+      // and add them to the throw clause below
+      throw AmadeusClientHttpException(
+          response.statusCode, 'Http error when calling service', null);
+    }
+
+    return response;
+  }
 }
 
 /// The response model for getting the OAuth access token.
