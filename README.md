@@ -43,7 +43,7 @@ Follow the documentation for getting started on [Amadeus for Developers](https:/
 ### Environment Setup
 After checking out the code from github, you will need to create a ./lib/credential.dart file.  This file will contain your unique API and API_SECRET keys.
 
-``` 
+```dart
     class Credentials {
         static const String API_KEY = 'YOUR API KEY GOES HERE';
         static const String API_SECRET = 'YOUR API SECRET GOES HERE';
