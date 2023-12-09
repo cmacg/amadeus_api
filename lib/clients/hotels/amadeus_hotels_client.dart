@@ -4,6 +4,7 @@ import 'package:amadeusapi/client_exception.dart';
 import 'package:amadeusapi/clients/amadeus_client.dart';
 import 'package:amadeusapi/models/hotels/booking/v1/hotel_booked_response.dart';
 import 'package:amadeusapi/models/hotels/booking/v1/hotel_booking_query.dart';
+import 'package:amadeusapi/models/hotels/offers/v3/hotel_offers.dart';
 import 'package:amadeusapi/models/hotels/offers/v3/multi_response.dart';
 import 'package:amadeusapi/models/hotels/search/v1/distance.dart';
 import 'package:amadeusapi/models/hotels/search/v1/hotels_search_response.dart';
@@ -126,6 +127,23 @@ class AmadeusHotelsClient extends AmadeusClient {
     return HotelBookedResponse.fromJson(json.decode(response.body));
   }
 
+  Future<HotelOffers> getOfferPricing(
+      {required String offerId, String? lang}) async {
+    Map<String, String> query = new HashMap<String, String>();
+    if (lang != null) {
+      query.putIfAbsent('lang', () => lang);
+    }
+
+    Uri uri = getUri(offersPath + "/" + offerId, query, test);
+    final response = await executeQuery(uri);
+
+    if (response.statusCode != 200) {
+      throw AmadeusClientHttpException(
+          response.statusCode, 'Http error when calling service', null);
+    }
+    return HotelOffers.fromJson(json.decode(response.body)['data']);
+  }
+
   Future<MultiResponse> getMultiHotelOffers(
       {required List<String>? hotelIds,
       int adults = 1,
@@ -184,24 +202,18 @@ class AmadeusHotelsClient extends AmadeusClient {
 
     return MultiResponse.fromJson(json.decode(response.body));
   }
+
+  String translateAmenity(Amenity amenity) {
+    if (amenity == Amenity.BABY_SITTING) {
+      return "BABY-SITTING";
+    } else if (amenity == Amenity.BAR_OR_LOUNGE) {
+      return "BAR of LOUNGE";
+    } else if (amenity == Amenity.WIFI_IN_ROOM) {
+      return "WI-FI_IN_ROOM";
+    }
+    return amenity.toString().split('.').last;
+  }
 }
-
-// TODO Get a full list of chains, brands and merchants
-final Map<String, String> chainCodes = {
-  'marriott': 'EM',
-  'hilton': 'EH',
-  'ihg': '6C',
-  'wyndham': 'WR',
-  'accor': 'RT',
-  'best western': 'BW',
-  'choice': 'EC',
-  'radisson': 'CW',
-  'value hotels': 'AD',
-  'hrs': 'HV,'
-};
-
-// TODO Get a full list of rate codes
-enum RateCode { GOV, AAA, MIL, SNR, PRO, COR }
 
 enum BoardType { ROOM_ONLY, BREAKFAST, HALF_BOARD, FULL_BOARD, ALL_INCLUSIVE }
 

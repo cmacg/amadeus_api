@@ -8,6 +8,7 @@ import 'package:amadeusapi/models/hotels/booking/v1/payment.dart';
 import 'package:amadeusapi/models/hotels/booking/v1/room.dart';
 import 'package:amadeusapi/models/hotels/booking/v1/stakeholder.dart';
 import 'package:amadeusapi/models/hotels/offers/v3/multi_response.dart';
+import 'package:amadeusapi/models/hotels/search/v1/distance.dart';
 import 'package:amadeusapi/models/hotels/search/v1/hotels_search_response.dart';
 
 import 'package:test/test.dart';
@@ -19,7 +20,9 @@ void main() async {
       test: true);
 
   HotelsSearchResponse searchResponse =
-      await hotelClient.searchHotelsByCityCode(cityCode: 'PAR');
+      await hotelClient.searchHotelsByCityCode(
+          cityCode: 'PAR', radius: 5, radiusUnit: DistanceUnit.KILOMETERS);
+
   List<String> hotelIds = [searchResponse.hotels![0].hotelId!];
   DateTime now = DateTime.now();
 

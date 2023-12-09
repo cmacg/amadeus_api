@@ -44,9 +44,6 @@ class Hotel {
   /// Longitude of the hotel.
   final double? longitude;
 
-  // TODO Amenities
-  //final List<Amenity>? amenities;
-
   Hotel({
     required this.hotelId,
     this.chainCode,

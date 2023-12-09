@@ -25,9 +25,8 @@ class PolicyDetails {
   /// The hold policy.
   final HoldPolicy? holdTime;
 
-  // TODO: Figure out how to handle this correctly.  The example only has a
-  // TODO: single cancellation policy, but the API docs say it can be a list. While
-  // TODO: the model documentation describes it as a list.
+  // The example only has a single cancellation policy, but the API docs say it
+  // can be a list. While the model documentation describes it as a list.
   final CancellationPolicy? cancellation;
 
   /// List of cancellation policies.

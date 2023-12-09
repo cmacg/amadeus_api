@@ -1,4 +1,4 @@
-// TODO Where is this used
+// Encapsulates the URI of a media item along with optional metadata.
 class Media {
   /// The URI of the media.
   final String uri;
@@ -10,7 +10,9 @@ class Media {
 
   Media.fromJson(Map<String, dynamic> json)
       : uri = json['uri'],
-        category = _getMediaCategory(json['category']);
+        category = (json['category'] == null)
+            ? null
+            : _getMediaCategory(json['category']);
 
   static MediaCategory? _getMediaCategory(String category) {
     for (MediaCategory mediaCategory in MediaCategory.values) {

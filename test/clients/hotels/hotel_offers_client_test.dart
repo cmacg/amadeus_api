@@ -1,5 +1,9 @@
 import 'package:amadeusapi/credentials.dart';
 import 'package:amadeusapi/clients/hotels/amadeus_hotels_client.dart';
+import 'package:amadeusapi/models/hotels/offers/v3/hotel.dart';
+import 'package:amadeusapi/models/hotels/offers/v3/hotel_offer.dart';
+import 'package:amadeusapi/models/hotels/offers/v3/hotel_offers.dart';
+import 'package:amadeusapi/models/hotels/offers/v3/hotel_price.dart';
 import 'package:amadeusapi/models/hotels/offers/v3/multi_response.dart';
 import 'package:test/test.dart';
 
@@ -9,9 +13,10 @@ void main() async {
       apiSecret: Credentials.API_SECRET,
       test: true);
 
+  DateTime now = DateTime.now();
+
   test('Testing the Amadeus hotels v3 client', () async {
-    var ids = ['MCLONGHM', 'MCMARCOI'];
-    DateTime now = DateTime.now();
+    final List<String> ids = ['MCLONGHM', 'MCMARCOI'];
 
     MultiResponse multiResponse = await hotelClient.getMultiHotelOffers(
         hotelIds: ids,
@@ -23,5 +28,25 @@ void main() async {
         bestRateOnly: false);
 
     expect(multiResponse, isNotNull);
+  });
+
+  test('Testing the hotel offers pricing', () async {
+    final String offerId = '4SFY87Q85U';
+
+    HotelOffers hotelOffers =
+        await hotelClient.getOfferPricing(offerId: offerId, lang: 'en-US');
+
+    expect(hotelOffers, isNotNull);
+    Hotel hotel = hotelOffers.hotel!;
+    HotelOffer hotelOffer = hotelOffers.offers![0];
+    HotelPrice hotelPrice = hotelOffers.offers![0].hotelPrice;
+
+    expect(hotel.chainCode, 'MC');
+    expect(hotel.hotelId, 'MCLONGHM');
+    expect(hotelOffer.checkInDate, DateTime(now.year, now.month, now.day + 1));
+    expect(hotelOffer.checkOutDate, DateTime(now.year, now.month, now.day + 2));
+
+    expect(hotelPrice.currency, 'GBP');
+    expect(hotelPrice.base, '695.00');
   });
 }
