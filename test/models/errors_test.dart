@@ -38,15 +38,15 @@ void main() {
     expect(errors.errors[0].code, 0);
     expect(errors.errors[0].title, 'title');
     expect(errors.errors[0].detail, 'detail');
-    expect(errors.errors[0].source.parameter, 'parameter');
-    expect(errors.errors[0].source.pointer, 'pointer');
-    expect(errors.errors[0].source.example, 'example');
+    expect(errors.errors[0].source!.parameter, 'parameter');
+    expect(errors.errors[0].source!.pointer, 'pointer');
+    expect(errors.errors[0].source!.example, 'example');
     expect(errors.errors[1].status, 500);
     expect(errors.errors[1].code, 5);
     expect(errors.errors[1].title, 'title2');
     expect(errors.errors[1].detail, 'detail2');
-    expect(errors.errors[1].source.parameter, 'parameter2');
-    expect(errors.errors[1].source.pointer, 'pointer2');
-    expect(errors.errors[1].source.example, 'example2');
+    expect(errors.errors[1].source!.parameter, 'parameter2');
+    expect(errors.errors[1].source!.pointer, 'pointer2');
+    expect(errors.errors[1].source!.example, 'example2');
   });
 }

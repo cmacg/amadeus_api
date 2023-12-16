@@ -1,4 +1,5 @@
 import 'package:amadeusapi/models/hotels/offers/v3/deposit_policy.dart';
+import 'package:amadeusapi/models/hotels/offers/v3/payment_policy.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -26,11 +27,10 @@ void main() {
 
   test('DepositPolicy.fromJson acceptedPayments', () {
     expect(depositPolicy.acceptedPayments?.creditCards, ["VI", "CA"]);
-    // TODO find out why this is failing
-    //expect(depositPolicy.acceptedPayments?.methods, [
-    //  PaymentMethod.CREDIT_CARD,
-    //  PaymentMethod.CHECK,
-    //  PaymentMethod.VCC_BILLBACK
-    //]);
+    expect(depositPolicy.acceptedPayments?.methods, [
+      PaymentMethod.CREDIT_CARD,
+      PaymentMethod.CHECK,
+      PaymentMethod.VCC_BILLBACK
+    ]);
   });
 }

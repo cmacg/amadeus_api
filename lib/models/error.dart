@@ -1,19 +1,19 @@
 import 'package:amadeusapi/models/error_source.dart';
 
 class Error {
-  final int status;
-  final int code;
-  final String title;
-  final String detail;
-  final ErrorSource source;
+  final int? status;
+  final int? code;
+  final String? title;
+  final String? detail;
+  final ErrorSource? source;
   final String? documentation;
 
   Error(
-      {required this.status,
-      required this.code,
-      required this.title,
-      required this.detail,
-      required this.source,
+      {this.status,
+      this.code,
+      this.title,
+      this.detail,
+      this.source,
       this.documentation});
 
   Error.fromJson(Map<String, dynamic> json)
@@ -21,7 +21,9 @@ class Error {
         code = json['code'],
         title = json['title'],
         detail = json['detail'],
-        source = ErrorSource.fromJson(json['source']),
+        source = (json['source'] == null)
+            ? null
+            : ErrorSource.fromJson(json['source']),
         documentation = json['documentation'];
 
   Map<String, dynamic> toJson() => {
@@ -29,7 +31,7 @@ class Error {
         'code': code,
         'title': title,
         'detail': detail,
-        'source': source.toJson(),
+        'source': (source == null) ? null : source!.toJson(),
         'documentation': documentation,
       };
 

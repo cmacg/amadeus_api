@@ -27,11 +27,14 @@ abstract class AmadeusClient {
   /// API access token needed for access to the Amadeus API products.
   String? _accessToken;
 
+  /// DateTime used to keep track when the access token expires.
   DateTime? _accessTokenExpiration;
 
   AmadeusClient(
       {required this.apiKey, required this.apiSecret, this.test = false});
 
+  /// Helper method to generate a URI to the Amadeus self service APIs.  Based
+  /// on the [test] flag, this method will determine the appropriate authority.
   Uri getUri(String path, Map<String, String>? query, bool test) {
     Uri uri = Uri.https(_authority, path, query);
     if (test) {
@@ -51,8 +54,12 @@ abstract class AmadeusClient {
     return false;
   }
 
-  /// Method used to get (or refresh) the API access key.
-  Future<String> getAccessToken() async {
+  /// Method used to get (or refresh) the API access key.  This is a private
+  /// method because all clients should be using the [executePost] and
+  /// [executeQuery] methods for call the Amadeus API.  This was the usage and
+  /// application of the expirable access token is handled here and not
+  /// amongst the different clients.
+  Future<String> _getAccessToken() async {
     if (_accessToken != null && !_isAuthKeyExpired()) {
       return Future<String>.value(_accessToken);
     }
@@ -66,15 +73,7 @@ abstract class AmadeusClient {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
 
-    var authUri = Uri(
-        scheme: 'https',
-        host: (test) ? _testAuthority : _authority,
-        path: _authPath);
-
-    if (test) {
-      print(authUri);
-      print(body);
-    }
+    Uri authUri = getUri(_authPath, null, test);
 
     http.Response response =
         await http.post(authUri, headers: headers, body: body);
@@ -97,8 +96,12 @@ abstract class AmadeusClient {
     return Future<String>.value(_accessToken);
   }
 
+  /// This method should be used by any of clients within this library to
+  /// execute an HTTP Get by passing in a [Uri].  This method handles the
+  /// application of the API access tokens and wrapping errors in the
+  /// appropriate exception with the errors easily accessible.
   Future<http.Response> executeQuery(Uri uri) async {
-    String accessToken = await getAccessToken();
+    String accessToken = await _getAccessToken();
     final Map<String, String> headers = {
       'Authorization': 'Bearer ' + accessToken
     };
@@ -115,8 +118,13 @@ abstract class AmadeusClient {
     return response;
   }
 
+  /// This method should be used by any of clients within this library to
+  /// execute an HTTP Post.  This method handles the application of the API
+  /// access tokens and wrapping errors in the appropriate exception with
+  /// the errors easily accessible.
   Future<http.Response> executePost(Uri uri, Map<String, dynamic> body) async {
-    String accessToken = await getAccessToken();
+    String accessToken = await _getAccessToken();
+
     final Map<String, String> headers = {
       'Authorization': 'Bearer ' + accessToken,
       'Content-Type': 'application/json; charset=UTF-8',

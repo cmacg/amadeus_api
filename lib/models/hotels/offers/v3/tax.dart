@@ -73,4 +73,4 @@ class Tax {
 
 enum PricingFrequency { PER_STAY, PER_NIGHT }
 
-enum PricingMode { PER_OCCUPANT, PER_ROOM }
+enum PricingMode { PER_OCCUPANT, PER_ROOM, PER_PRODUCT }
