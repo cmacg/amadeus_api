@@ -142,11 +142,11 @@ void main() {
 
   test('Testing MultiResponse fromJson', () {
     expect(multiResponse, isNotNull);
-    expect(multiResponse.data?.length, 2);
+    expect(multiResponse.hotelOffers?.length, 2);
   });
 
-  final HotelOffers hotelOffers1 = multiResponse.data![0];
-  final HotelOffers hotelOffers2 = multiResponse.data![1];
+  final HotelOffers hotelOffers1 = multiResponse.hotelOffers![0];
+  final HotelOffers hotelOffers2 = multiResponse.hotelOffers![1];
 
   test('Testing Hotel Offers 1: hotel', () {
     expect(hotelOffers1.hotel?.hotelId, "MCLONGHM1");
@@ -271,7 +271,7 @@ void main() {
   test('testing example response from the server', () {
     final MultiResponse response2 = MultiResponse.fromJson(json2);
     expect(response2, isNotNull);
-    HotelOffers hotelOffers = response2.data![0];
+    HotelOffers hotelOffers = response2.hotelOffers![0];
     expect(hotelOffers.hotel!.chainCode, 'MC');
     expect(hotelOffers.offers!.length, 42);
   });

@@ -41,11 +41,6 @@ void main() {
     expect(price.variations, isNotNull);
     expect(price.variations!.average, isNotNull);
     expect(price.variations!.average!.base, '805.00');
-
-    // TODO can we get a total number back
-    //expect(price.variations!.average!.total,
-    //    json['variations']['average']['total']);
-
     expect(price.variations!.priceVariations![0], isNotNull);
     expect(price.variations!.priceVariations![0].base, '805.00');
     expect(price.variations!.priceVariations![0].startDate.year, 2023);

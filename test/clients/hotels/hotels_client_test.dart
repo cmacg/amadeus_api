@@ -8,7 +8,7 @@ import 'package:amadeusapi/models/hotels/booking/v1/payment.dart';
 import 'package:amadeusapi/models/hotels/booking/v1/room.dart';
 import 'package:amadeusapi/models/hotels/booking/v1/stakeholder.dart';
 import 'package:amadeusapi/models/hotels/offers/v3/multi_response.dart';
-import 'package:amadeusapi/models/hotels/search/v1/distance.dart';
+import 'package:amadeusapi/models/distance.dart';
 import 'package:amadeusapi/models/hotels/search/v1/hotels_search_response.dart';
 
 import 'package:test/test.dart';
@@ -31,7 +31,7 @@ void main() async {
       checkInDate: DateTime(now.year, now.month, now.day + 30),
       checkOutDate: DateTime(now.year, now.month, now.day + 32));
 
-  final String offerId = offersResponse.data![0].offers![0].id;
+  final String offerId = offersResponse.hotelOffers![0].offers![0].id;
   final StakeholderName guestName =
       StakeholderName(title: 'Mr', firstName: 'Bob', lastName: 'Johnson');
   final Contact guestContact =

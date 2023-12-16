@@ -1,6 +1,6 @@
 import 'package:amadeusapi/credentials.dart';
 import 'package:amadeusapi/clients/hotels/amadeus_hotels_client.dart';
-import 'package:amadeusapi/models/hotels/search/v1/distance.dart';
+import 'package:amadeusapi/models/distance.dart';
 import 'package:amadeusapi/models/hotels/search/v1/hotels_search_response.dart';
 
 import 'package:test/test.dart';

@@ -6,7 +6,7 @@ import 'package:amadeusapi/models/hotels/booking/v1/hotel_booked_response.dart';
 import 'package:amadeusapi/models/hotels/booking/v1/hotel_booking_query.dart';
 import 'package:amadeusapi/models/hotels/offers/v3/hotel_offers.dart';
 import 'package:amadeusapi/models/hotels/offers/v3/multi_response.dart';
-import 'package:amadeusapi/models/hotels/search/v1/distance.dart';
+import 'package:amadeusapi/models/distance.dart';
 import 'package:amadeusapi/models/hotels/search/v1/hotels_search_response.dart';
 import 'package:intl/intl.dart';
 
@@ -203,11 +203,17 @@ class AmadeusHotelsClient extends AmadeusClient {
     return MultiResponse.fromJson(json.decode(response.body));
   }
 
+  /// This method is used to translate the Amadeus hotel amenities whose names
+  /// don't conform to the required format of a dart enum.
+  /// Gotchas:
+  /// BABY_SITTING vs. BABY-SITTING
+  /// BAR_OR_LOUNGE vs. BAR or LOUNGE
+  /// WIFI_IN_ROOM vs. WI-FI_IN_ROOM
   String translateAmenity(Amenity amenity) {
     if (amenity == Amenity.BABY_SITTING) {
       return "BABY-SITTING";
     } else if (amenity == Amenity.BAR_OR_LOUNGE) {
-      return "BAR of LOUNGE";
+      return "BAR or LOUNGE";
     } else if (amenity == Amenity.WIFI_IN_ROOM) {
       return "WI-FI_IN_ROOM";
     }
@@ -215,19 +221,18 @@ class AmadeusHotelsClient extends AmadeusClient {
   }
 }
 
+/// Meals/food provided by the hotel
 enum BoardType { ROOM_ONLY, BREAKFAST, HALF_BOARD, FULL_BOARD, ALL_INCLUSIVE }
 
 enum ViewType { FULL, LIGHT, NONE }
 
+/// Sorting value
 enum SortType { NONE, DISTANCE, PRICE }
 
+/// Payment policies
 enum PaymentPolicy { GUARANTEE, DEPOSIT, NONE }
 
-// TODO handle gotchas
-// gotchas:
-// BABY_SITTING vs. BABY-SITTING
-// BAR_OR_LOUNGE vs. BAR or LOUNGE
-// WIFI_IN_ROOM vs. WI-FI_IN_ROOM
+/// Possible hotel amenities.
 enum Amenity {
   SWIMMING_POOL,
   SPA,

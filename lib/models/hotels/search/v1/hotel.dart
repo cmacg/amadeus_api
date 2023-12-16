@@ -1,6 +1,6 @@
 import 'package:amadeusapi/models/hotels/search/v1/address.dart';
-import 'package:amadeusapi/models/hotels/search/v1/distance.dart';
-import 'package:amadeusapi/models/hotels/search/v1/geo_code.dart';
+import 'package:amadeusapi/models/distance.dart';
+import 'package:amadeusapi/models/geo_code.dart';
 
 /// Hotel location information
 class Hotel {
