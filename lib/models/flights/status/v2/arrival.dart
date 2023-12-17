@@ -1,4 +1,4 @@
-import 'package:amadeusapi/models/flights/status/v2/get.dart';
+import 'package:amadeusapi/models/flights/status/v2/gate.dart';
 import 'package:amadeusapi/models/flights/status/v2/terminal.dart';
 import 'package:amadeusapi/models/flights/status/v2/timing.dart';
 
