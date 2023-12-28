@@ -1,5 +1,5 @@
 name: amadeusapi
-description: Flutter package encapsulating the Amadeus Travel API
+description: Dart package encapsulating the Amadeus Travel API
 version: 0.0.1
 homepage:
 
@@ -12,6 +12,3 @@ dependencies:
  
 dev_dependencies:
   test: 1.24.9
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
